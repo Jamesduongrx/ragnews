@@ -238,7 +238,7 @@ class ArticleDB:
         '''
         counter = query
         sql = '''
-        SELECT url, title, url, publish_date, en_summary
+        SELECT url, title, publish_date, en_summary
         FROM articles
         WHERE articles MATCH ?
         ORDER BY rank
