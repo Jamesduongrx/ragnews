@@ -236,7 +236,7 @@ class ArticleDB:
         Lowering the value of the timebias_alpha parameter will result in the time becoming more influential.
         The final ranking is computed by the FTS5 rank * timebias_alpha / (days since article publication + timebias_alpha).
         '''
-        
+        counter = query
         sql = '''
         SELECT url, title, url, publish_date, en_summary
         FROM articles
@@ -247,7 +247,7 @@ class ArticleDB:
 
         _logsql(sql)
         cursor = self.db.cursor()
-        cursor.execute(sql, (query,limit))
+        cursor.execute(sql, (counter,limit))
         rows = cursor.fetchall()
 
         # Columns names from cursor descriptions
