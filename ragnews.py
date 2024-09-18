@@ -237,7 +237,7 @@ class ArticleDB:
         The final ranking is computed by the FTS5 rank * timebias_alpha / (days since article publication + timebias_alpha).
         '''
         
-        sql = f'''
+        sql = '''
         SELECT url, title, url, publish_date, en_summary
         FROM articles
         WHERE articles MATCH ?
@@ -247,7 +247,7 @@ class ArticleDB:
 
         _logsql(sql)
         cursor = self.db.cursor()
-        cursor.execute(sql)
+        cursor.execute(sql, (query,limit))
         rows = cursor.fetchall()
 
         # Columns names from cursor descriptions
