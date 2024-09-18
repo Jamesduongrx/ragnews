@@ -240,7 +240,7 @@ class ArticleDB:
         sql = f'''
         SELECT url, title, url, publish_date, en_summary
         FROM articles
-        WHERE articles MATCH '{query}'
+        WHERE articles MATCH ?
         ORDER BY rank
         LIMIT ?;
         '''
