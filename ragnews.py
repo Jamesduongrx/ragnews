@@ -395,7 +395,9 @@ if __name__ == '__main__':
 
     if args.add_url:
         db.add_url(args.add_url, recursive_depth=args.recursive_depth, allow_dupes=True)
-
+    elif args.query:
+        output = rag(args.query, db)
+        print(output)
     else:
         import readline
         while True:
