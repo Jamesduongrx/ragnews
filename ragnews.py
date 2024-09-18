@@ -242,7 +242,7 @@ class ArticleDB:
         FROM articles
         WHERE articles MATCH '{query}'
         ORDER BY rank
-        LIMIT {limit};
+        LIMIT ?;
         '''
 
         _logsql(sql)
