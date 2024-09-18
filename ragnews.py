@@ -74,12 +74,14 @@ def extract_keywords(text, seed=None):
     In production, you probably do not want to specify the seed.
     '''
 
-    # FIXME:
-    # Implement this function.
-    # It's okay if you don't get the exact same keywords as me.
-    # You probably certainly won't because you probably won't come up with the exact same prompt as me.
-    # To make the test cases above pass,
-    # you'll have to modify them to be what the output of your prompt provides.
+    prompt = (
+        "You are a professional at extracting keywords given a text"
+        "Return the keywords in a lowercase string that is separated by a space"
+    )
+
+    keywords = run_llm(prompt, text, seed=seed)
+    return keywords
+
 
 
 ################################################################################
@@ -126,9 +128,6 @@ def rag(text, db):
     # FIXME:
     # Implement this function.
     # Recall that your RAG system should:
-    # 1. Extract keywords from the text.
-    # 2. Use those keywords to find articles related to the text.
-    # 3. Construct a new user prompt that includes all of the articles and the original text.
     # 4. Pass the new prompt to the LLM and return the result.
     #
     # HINT:
@@ -137,6 +136,25 @@ def rag(text, db):
     # You can start with a basic system prompt right away just to check if things are working,
     # but don't spend a lot of time on the system prompt until you're sure everything else is working.
     # Then, you can iteratively add more commands into the system prompt to correct "bad" behavior you see in your program's output.
+
+    # 1. Extract keywords from the text.
+
+    keywords = extract_keywords(text)
+    # 2. Use those keywords to find articles related to the text.
+
+    articles = db.find_articles(keywords)
+    # 3. Construct a new user prompt that includes all of the articles and the original text.
+    system_prompt = """
+    You are an experienced assistant that once provided a articles will answer the user's question accurately and comprehensively. 
+    """
+
+
+    user = "\n".join([f"{article['title']}\nContent: {article['en_summary']}" for article in articles])
+
+    return run_llm(system_prompt, user)
+
+
+
 
 
 class ArticleDB:
@@ -219,19 +237,27 @@ class ArticleDB:
         The final ranking is computed by the FTS5 rank * timebias_alpha / (days since article publication + timebias_alpha).
         '''
         
-        # FIXME:
-        # Implement this function.
-        # You do not need to concern yourself with the timebias_alpha parameter.
-        # (Although I encourage you to try!)
-        #
-        # HINT:
-        # The only thing my solution does is pass a SELECT statement to the sqlite3 database.
-        # The SELECT statement will need to use sqlite3's FTS5 syntax for full text search.
-        # If you need to review how to coordinate sqlite3 and python,
-        # there is an example in the __len__ method below.
-        # The details of the SELECT statement will be different
-        # (because the functions collect different information)
-        # but the outline of the python code is the same.
+        sql = f'''
+        SELECT url, title, url, publish_date, en_summary
+        FROM articles
+        WHERE articles MATCH '{query}'
+        ORDER BY rank
+        LIMIT {limit};
+        '''
+
+        _logsql(sql)
+        cursor = self.db.cursor()
+        cursor.execute(sql, (limit,query))
+        rows = cursor.fetchall()
+
+        # Columns names from cursor descriptions
+        columns = [column[0] for column in cursor.description]
+        # Rows to list of dictionaries
+        row_dict = [dict(zip(columns, row)) for row in rows]
+        return row_dict
+
+
+
 
     @_catch_errors
     def add_url(self, url, recursive_depth=0, allow_dupes=False):
