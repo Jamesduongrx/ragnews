@@ -1,1 +1,1 @@
-# ragnews![](https://github.com/Jamesduongrx/ragnews/workflows/test.yml/badge.svg)
+# ragnews![](https://github.com/Jamesduongrx/ragnews/blob/main/.github/workflows/tests.yml/badge.svg)
