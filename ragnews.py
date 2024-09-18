@@ -247,7 +247,7 @@ class ArticleDB:
 
         _logsql(sql)
         cursor = self.db.cursor()
-        cursor.execute(sql, (limit,query))
+        cursor.execute(sql, (query))
         rows = cursor.fetchall()
 
         # Columns names from cursor descriptions
