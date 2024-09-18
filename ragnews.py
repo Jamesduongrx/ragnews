@@ -379,10 +379,14 @@ if __name__ == '__main__':
     parser.add_argument('--db', default='ragnews.db')
     parser.add_argument('--recursive_depth', default=0, type=int)
     parser.add_argument('--add_url', help='If this parameter is added, then the program will not provide an interactive QA session with the database.  Instead, the provided url will be downloaded and added to the database.')
+    parser.add_argument('--query', help='Query to help search for articles.')
+
     args = parser.parse_args()
 
+
+
     logging.basicConfig(
-        format='%(asctime)s %(levelname)-8s %(message)s',
+        format='%(asctime)s %(levqelname)-8s %(message)s',
         datefmt='%Y-%m-%d %H:%M:%S',
         level=args.loglevel.upper(),
         )
