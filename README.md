@@ -13,13 +13,19 @@ MASK0: Biden
 ```
 
 # Getting Started
-Install Groq, and generate a free Groq API key,https://console.groq.com/keys. Create an .env file through the terminal and add the generated key:
 
+Install files:
+```
+pip install -r requirements.txt
+```
+Install Groq, and generate a free Groq API key,https://console.groq.com/keys. Create an .env file through the terminal and add the generated key:
 ```
 GROQ_API_KEY=your_api_key_here
 ```
 # Running the code
-
+```
+python evaluate.py --data-path ./data/evaluation_set.txt
+```
 
 
 
