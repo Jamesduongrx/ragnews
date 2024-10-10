@@ -26,6 +26,15 @@ GROQ_API_KEY=your_api_key_here
 ```
 python evaluate.py --data-path ./data/evaluation_set.txt
 ```
+#Example Accuracy:
+```
+(Last data tested)
+Text: On August 15, 2024, vice presidential candidates Vance and [MASK] agreed to a debate hosted by CBS News on October 1.
+Predictions:
+MASK: Harris
+
+Accuracy: 72.44094488188976%
+```
 
 
 
